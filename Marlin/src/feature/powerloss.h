@@ -67,8 +67,8 @@ typedef struct {
   #if HAS_HOME_OFFSET
     xyz_pos_t home_offset;
   #endif
-  #if HAS_POSITION_SHIFT
-    xyz_pos_t position_shift;
+  #if HAS_WORKSPACE_OFFSET
+    xyz_pos_t workspace_offset;
   #endif
   #if HAS_MULTI_EXTRUDER
     uint8_t active_extruder;
@@ -174,6 +174,10 @@ class PrintJobRecovery {
     static bool enabled;
     static void enable(const bool onoff);
     static void changed();
+
+    #if HAS_PLR_BED_THRESHOLD
+      static celsius_t bed_temp_threshold;
+    #endif
 
     static bool exists() { return card.jobRecoverFileExists(); }
     static void open(const bool read) { card.openJobRecoveryFile(read); }

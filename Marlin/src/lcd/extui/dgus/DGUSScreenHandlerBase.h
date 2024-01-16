@@ -80,8 +80,11 @@ public:
   #endif
   // Hook for settings
   static void handleSettings(DGUS_VP_Variable &var, void *val_ptr);
-  static void handleStepPerMMChanged(DGUS_VP_Variable &var, void *val_ptr);
-  static void handleStepPerMMExtruderChanged(DGUS_VP_Variable &var, void *val_ptr);
+
+  #if ENABLED(EDITABLE_STEPS_PER_UNIT)
+    static void handleStepPerMMChanged(DGUS_VP_Variable &var, void *val_ptr);
+    static void handleStepPerMMExtruderChanged(DGUS_VP_Variable &var, void *val_ptr);
+  #endif
 
   #if HAS_PID_HEATING
     // Hook for "Change this temperature PID para"
@@ -207,7 +210,7 @@ public:
   static void sendFloatAsIntValueToDisplay(DGUS_VP_Variable &var) {
     if (var.memadr) {
       float f = *(float *)var.memadr;
-      DEBUG_ECHOLNPAIR_F(" >> ", f, 6);
+      DEBUG_ECHOLNPGM(" >> ", p_float_t(f, 6));
       f *= cpow(10, decimals);
       dgus.writeVariable(var.VP, (int16_t)f);
     }
